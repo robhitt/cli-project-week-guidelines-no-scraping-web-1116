@@ -8,10 +8,13 @@ class RestaurantAdapter
       response = RestClient.get("https://data.cityofnewyork.us/resource/xx67-kt59.json")
       JSON.parse(response)
     end
+# https://data.cityofnewyork.us/resource/9w7m-hzhe.json This includes rating_dates after 1/1/2016
 
     def add_restaurants(data)
         data.each do | restaurant |
-          Restaurant.new(restaurant["dba"], restaurant["grade"], restaurant["violation_description"], restaurant["camis"])
+          if restaurant["grade_date"]
+            Restaurant.find_or_create_restaurant(restaurant["dba"], restaurant["grade"], restaurant["violation_description"], restaurant["camis"], restaurant["grade_date"])
+          end
         end
     end
 

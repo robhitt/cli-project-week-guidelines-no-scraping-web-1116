@@ -97,10 +97,16 @@ class RatingCLI
     matches = false
     Restaurant.all.each do |restaurant|
       if restaurant.name == user_input.upcase
+      puts " "
         puts "Name: #{restaurant.name}"
         puts "Grade: #{restaurant.grade}"
-        puts "Violation Description: #{restaurant.violation_description}"
-        puts "CAMIS #{restaurant.camis}"
+        puts "Grade Date: #{restaurant.grade_date}"
+        puts "Violation Description(s):"
+
+        restaurant.violations.uniq.each.with_index(1) do | indv_violation, index |
+          #binding.pry
+          puts "   #{index}. #{indv_violation}"
+        end
         puts " "
         matches = true
       end
@@ -113,7 +119,11 @@ class RatingCLI
     matches = false
     Restaurant.all.each do |restaurant|
       if restaurant.name == user_input.upcase
-        puts "Name: #{restaurant.name}, Grade: #{restaurant.grade}"
+        puts " "
+        puts "========================================"
+        puts "Name: #{restaurant.name}, Grade: #{restaurant.grade}, Violations: #{restaurant.violations.count}"
+        puts "========================================"
+        puts " "
         matches = true
       end
     end
